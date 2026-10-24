@@ -1,0 +1,121 @@
+/* BolDoc design tokens (docs/design/ui.md).
+      One accent with one meaning: orange is the caller's voice (your words, changes made by voice, the play button,
+      the live meter). Buttons and links are ink. The public site is light; the signed-in console is light too unless the
+*/
+:root {
+  color-scheme: light;
+  --panel: #f3f3f1;
+  --card: #ffffff;
+  --ink: #121212;
+  --ink-2: #6b6b66;          /* 4.9:1 on panel */
+  --rule: #dcdcd7;
+  --rule-2: #ecece8;
+  --noise: #a3a39c;          /* old, struck, idle */
+  --noise-2: #c9c9c2;
+  --voice: #ff4d1a;          /* graphics only */
+  --voice-text: #c2380d;     /* orange read as text: AA on panel and card */
+  --voice-display: #fe4c19;  /* orange display text, 24 px and up */
+  --voice-wash: #fff0ea;
+  --danger: #b3261e;         /* errors only */
+  --ok: #1f7a4d;             /* "delivered", "saved" */
+
+  --sans: "Geist Variable", "Noto Sans Devanagari Variable", "Noto Sans Tamil Variable", -apple-system, system-ui,
+    sans-serif;
+  --mono: "Geist Mono Variable", ui-monospace, Menlo, monospace;
+  --doc: "Noto Sans Variable", "Noto Sans Devanagari Variable", "Noto Sans Tamil Variable", sans-serif; /* = PDF */
+
+  --h-display: clamp(52px, 7.4vw, 104px);   /* 600, line-height .94, letter-spacing -.055em */
+  --h-section: clamp(38px, 5.2vw, 72px);    /* 600, .98, -.05em */
+  --h-tagline: clamp(24px, 2.65vw, 38px);   /* 600, 1.08, -.035em */
+  --h-sub: clamp(20px, 1.9vw, 25px);        /* 550, 1.25, -.02em */
+  --body: 18px;
+  --mono-size: 13px;
+
+  --pad: max(24px, calc(50% - 640px));      /* 1280 container */
+  --section: clamp(72px, 9vw, 128px);
+  --r-card: 18px;
+  --r-pane: 10px;
+  --r-btn: 10px;
+  --r-btn-sm: 8px;
+  --r-chip: 6px;
+  --r-seg: 11px;
+  --r-seg-thumb: 8px;
+  --shadow-card: 0 1px 0 #fff inset, 0 24px 48px -32px rgba(0, 0, 0, 0.25);
+  --shadow-page: 0 14px 28px -22px rgba(0, 0, 0, 0.35);
+  --shadow-btn-hover: 0 12px 24px -14px rgba(18, 18, 18, 0.7);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 120ms;
+  --t: 240ms;
+  --t-slow: 560ms;
+
+  /* The app's earlier names, mapped onto the system (call screen, document page, sign-in) */
+  --paper: var(--panel);
+  --sheet: var(--card);
+  --graphite: var(--ink);
+  --muted: var(--ink-2);
+  --rule-strong: var(--noise);
+  --ink-hover: #262625;
+  --ink-wash: var(--rule-2);
+  --on-ink: #ffffff;
+
+  /* The one dark surface a page may have (the balance, the reply-time tile, the SMS card): ink, so in dark mode it
+     turns light like every other ink thing. Its text in two steps, and its rules. */
+  --slab: var(--ink);
+  --on-slab: var(--on-ink);
+  --on-slab-2: #c9c9c2;
+  --on-slab-3: #a3a39c;
+  --slab-rule: #2e2e2c;
+  /* hover: a card lifts with an orange glow; a table row warms */
+  --voice-glow: 0 26px 44px -30px rgba(255, 77, 26, 0.6);
+  --row-wash: #fff8f5;
+  --margin: var(--voice);
+  --margin-wash: var(--voice-wash);
+  --stamp: var(--ok);
+  --focus: var(--voice);
+  --font-ui: var(--sans);
+  --font-doc: var(--doc);
+  --sheet-shadow: var(--shadow-page);
+  --step--1: 0.8rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.5625rem;
+  --step-3: 1.953rem;
+  --step-4: 2.441rem;
+  --step-5: 3.052rem;
+  --rule-gap: 28px;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+  --radius-control: var(--r-btn);
+  --radius-sheet: var(--r-pane);
+  --dock-h: 88px;
+}
+
+/* Dark: the signed-in console only (it sets data-area="app" on <html>), when the user picks it (light by
+   default; the header's toggle, kept on the device). Same meanings. */
+:root[data-area="app"][data-theme="dark"] {
+  color-scheme: dark;
+  --panel: #141413;
+  --card: #1c1c1a;
+  --ink: #f3f3f1;
+  --ink-2: #a3a39c;
+  --rule: #2f2f2c;
+  --rule-2: #242422;
+  --noise: #6b6b66;
+  --noise-2: #4a4a46;
+  --voice: #ff5a2a;
+  --voice-text: #ff7a50;
+  --voice-display: #ff6a3d;
+  --voice-wash: #3a1d14;
+  --danger: #ff8a80;
+  --ok: #5fd19b;
+  --ink-hover: #ffffff;
+  --on-ink: #141413;
+  --on-slab-2: #4a4a46;
+  --on-slab-3: #6b6b66;
+  --slab-rule: #d6d6cf;
+  --voice-glow: 0 26px 44px -30px rgba(255, 90, 42, 0.42);
+  --row-wash: #241a16;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 48px -28px rgba(0, 0, 0, 0.7);
+  --shadow-page: 0 18px 36px -24px rgba(0, 0, 0, 0.8);
+}
+

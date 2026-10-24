@@ -1,0 +1,22 @@
+[project]
+name = "boldoc-voice-agent"
+version = "0.1.0"
+description = "BolDoc: a talker/thinker voice agent that writes documents on a phone call"
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+docengine = [
+  "pydantic>=2.7",
+  "python-docx>=1.1",
+  "openpyxl>=3.1",
+  "python-pptx>=1.0",
+  "fonttools>=4.50",
+  "pypdf>=4.2",
+  # server-only (needs Pango): "weasyprint>=62",
+]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.pytest.ini_options]
+pythonpath = ["packages", "."]
+testpaths = ["tests"]
+addopts = "-q"

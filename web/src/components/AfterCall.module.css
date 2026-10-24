@@ -1,0 +1,122 @@
+/* After the call: a page of its own (the call's grid gives it the whole middle). */
+.page {
+  min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 22px;
+  width: 100%; max-width: 1180px; margin: 0 auto; padding: clamp(28px, 4vw, 44px) 24px 56px; box-sizing: border-box;
+}
+
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.titles { display: grid; gap: 8px; }
+.title { margin: 0; font-size: clamp(36px, 4.4vw, 48px); line-height: 1; font-weight: 600; letter-spacing: -0.045em; }
+.lede { margin: 0; font-size: 18px; color: var(--ink-2); }
+.topActions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+
+/* buttons: ink for the one next step, a line for the others */
+.ink, .line, .quiet, .sendBtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 20px;
+  border-radius: 12px; font: 600 16px/1 var(--sans); text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: background-color var(--t) var(--ease-out), border-color var(--t) var(--ease-out),
+    box-shadow var(--t) var(--ease-out), transform var(--t) var(--ease-out), color var(--t) var(--ease-out);
+}
+.ink { border: 0; background: var(--ink); color: var(--on-ink); }
+.ink:hover { color: var(--on-ink); background: var(--ink-hover); box-shadow: var(--shadow-btn-hover); transform: translateY(-1px); }
+.line { border: 1px solid var(--rule); background: var(--card); color: var(--ink); }
+.line:hover { color: var(--ink); border-color: var(--ink); transform: translateY(-1px); }
+.quiet { border: 0; background: none; color: var(--ink); padding: 0 8px; font-weight: 550; }
+.quiet:hover { color: var(--voice-text); }
+.ink:disabled, .line:disabled { opacity: 0.45; cursor: default; transform: none; box-shadow: none; }
+
+.grid { display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; }
+
+.docCard {
+  flex: 999 1 560px; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 28px; padding: 28px;
+  background: var(--card); border: 1px solid var(--rule); border-radius: 22px;
+}
+/* a real thumbnail: the document itself, set at a third of its size on paper that stays light */
+.thumb {
+  --panel: #f3f3f1; --card: #ffffff; --ink: #121212; --ink-2: #6b6b66; --rule: #dcdcd7; --rule-2: #ecece8;
+  --noise: #a3a39c; --muted: #6b6b66; --graphite: #121212; --rule-strong: #a3a39c; --ink-wash: #ecece8;
+  --sheet: #ffffff; --voice-text: #c2380d;
+  position: relative; flex: none; width: 200px; height: 260px; overflow: hidden; border-radius: 8px;
+  background: #fff; border: 1px solid #ecece8; box-shadow: var(--shadow-page); color: #1c1c1b; text-decoration: none;
+  transition: transform var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out);
+}
+.thumb:hover { transform: translateY(-3px) rotate(-0.4deg); box-shadow: 0 26px 40px -26px rgba(0, 0, 0, 0.45); }
+.thumbInner {
+  position: absolute; top: 18px; left: 18px; width: 560px; transform: scale(0.293); transform-origin: top left;
+  pointer-events: none;
+}
+.docBody { flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.docTitles { display: grid; gap: 4px; }
+.docTitle { margin: 0; font: 600 26px/1.15 var(--sans); letter-spacing: -0.025em; overflow-wrap: anywhere; }
+.docMeta { margin: 0; font-size: 15px; color: var(--ink-2); }
+.downloads { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.downloads .ink, .downloads .line { height: 46px; padding: 0 18px; }
+
+.send { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding-top: 14px; border-top: 1px solid var(--rule-2); }
+.sendBtn { height: 44px; padding: 0 16px; border: 1px solid transparent; background: var(--voice-wash); color: var(--voice-text); }
+.sendBtn:hover { border-color: var(--voice); transform: translateY(-1px); }
+.sendBtn:disabled { opacity: 0.6; cursor: default; transform: none; }
+.sendNote { font-size: 14px; color: var(--ink-2); }
+.sent { margin: 0; font-size: 15px; color: var(--ink); }
+.nowrap { white-space: nowrap; }
+
+.emptyCard {
+  flex: 999 1 560px; min-width: 0; display: grid; gap: 8px; align-content: center; padding: 32px;
+  background: var(--card); border: 1px dashed var(--noise); border-radius: 22px;
+}
+.emptyLead { margin: 0; font: 600 22px/1.25 var(--sans); letter-spacing: -0.02em; }
+.emptyText { margin: 0; color: var(--ink-2); max-width: 56ch; }
+
+/* the cost: the page's one dark surface */
+.cost {
+  flex: 1 1 352px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 26px;
+  background: var(--slab); color: var(--on-slab); border-radius: 22px;
+}
+.costHead { margin: 0 0 6px; font: 550 15px/1.3 var(--sans); color: var(--on-slab-2); }
+.row { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; font-variant-numeric: tabular-nums; }
+.row > span:first-child { color: var(--on-slab-2); }
+.total {
+  display: flex; justify-content: space-between; align-items: baseline; padding-top: 12px; margin-top: 2px;
+  border-top: 1px solid var(--slab-rule); font-weight: 600;
+}
+.totalFig { font-size: 28px; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.rupee { color: var(--voice); }
+.balance { margin: 0; font-size: 14px; color: var(--on-slab-3); }
+.help { margin-top: auto; padding-top: 12px; color: var(--on-slab); font-size: 14px; }
+.help:hover { color: var(--voice); }
+
+.said {
+  display: grid; gap: 10px; padding: 22px 26px; background: var(--card); border: 1px solid var(--rule); border-radius: 22px;
+}
+.saidHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; }
+.saidTitle { margin: 0; font: 600 18px/1.3 var(--sans); }
+.toggle {
+  border: 0; background: none; padding: 6px 0; color: var(--ink); font: 550 15px/1 var(--sans); cursor: pointer;
+  text-decoration: underline; text-underline-offset: 4px;
+}
+.toggle:hover { color: var(--voice-text); }
+.saidNote { margin: 0; font-size: 15px; color: var(--ink-2); }
+.lines { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.lineItem { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: baseline; font-size: 15.5px; line-height: 1.5; }
+.lineItem[data-who="boldoc"] > span:last-child { color: color-mix(in srgb, var(--ink) 74%, var(--panel)); }
+.who { display: inline-flex; align-items: center; gap: 6px; font: 550 13px/1.4 var(--sans); color: var(--ink-2); }
+.who::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--noise); }
+.lineItem[data-who="you"] .who { color: var(--ink); }
+.lineItem[data-who="you"] .who::before { background: var(--voice); }
+
+@media (max-width: 640px) {
+  .page { padding: 24px 16px 40px; }
+  .topActions, .topActions > * { width: 100%; }
+  .docCard { padding: 20px; gap: 20px; }
+  /* the sheet set at half size, as wide as the card allows (twice the room it has, halved) */
+  .thumb { width: 100%; height: 200px; container-type: inline-size; }
+  .thumbInner { width: min(640px, calc((100cqw - 36px) * 2)); transform: scale(0.5); }
+  .downloads > * { flex: 1 1 auto; }
+  .lineItem { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thumb:hover, .ink:hover, .line:hover, .sendBtn:hover { transform: none; }
+}
+
+.alsoWrote { margin: 12px 0 0; font-size: 14px; color: var(--ink-2); }
+.alsoWrote a { color: var(--ink); }

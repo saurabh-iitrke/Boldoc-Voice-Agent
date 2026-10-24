@@ -1,0 +1,44 @@
+/* "BolDoc talks in": the system's label and a compact select drawn as a line button (styles/chrome.module.css) */
+.field { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; }
+.label { composes: label from "../styles/chrome.module.css"; }
+.control { position: relative; display: inline-flex; }
+.control::after {   /* the chevron, in the theme's own ink */
+  content: ""; position: absolute; top: 50%; right: 15px; width: 7px; height: 7px; margin-top: -6px;
+  border-right: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: rotate(45deg);
+  pointer-events: none;
+}
+.select {
+  appearance: none; -webkit-appearance: none; height: 40px; min-width: 148px; padding: 0 40px 0 14px;
+  border: 1px solid var(--rule); border-radius: var(--r-btn); background: var(--card); color: var(--ink);
+  font: 500 15px/1 var(--sans); cursor: pointer;
+  transition: border-color var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out);
+}
+.select:hover { border-color: var(--noise); }
+.select:focus-visible { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px var(--rule-2); }
+.select:disabled { color: var(--ink-2); cursor: default; }
+
+/* Chips (the browser call's start): the picked one in ink with the orange dot of the caller's voice */
+.chipsField { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 10px; }
+.legend { padding: 0; margin-bottom: 10px; font: 550 15px/1.3 var(--sans); color: var(--ink); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  position: relative; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px;
+  border: 1px solid var(--rule); border-radius: 999px; background: var(--card); color: var(--ink);
+  font: 500 15px/1 var(--sans); cursor: pointer; white-space: nowrap;
+  transition: border-color var(--t) var(--ease-out), background-color var(--t) var(--ease-out),
+    color var(--t) var(--ease-out), transform var(--t) var(--ease-out);
+}
+.chip input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.chip:hover { border-color: var(--ink); }
+.chip:has(input:checked) { background: var(--ink); border-color: var(--ink); color: var(--on-ink); font-weight: 550; }
+.chip:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
+.dot { display: none; width: 7px; height: 7px; border-radius: 50%; background: var(--voice); flex: none; }
+.chip:has(input:checked) .dot { display: block; }
+.more {
+  height: 44px; padding: 0 14px; border: 1px dashed var(--noise); border-radius: 999px; background: transparent;
+  color: var(--ink-2); font: 500 15px/1 var(--sans); cursor: pointer;
+  transition: border-color var(--t) var(--ease-out), color var(--t) var(--ease-out);
+}
+.more:hover { border-color: var(--ink); color: var(--ink); }
+.hint { margin: 0; color: var(--ink-2); font-size: 14px; }
+.chipsField:disabled .chip { opacity: 0.6; cursor: default; }

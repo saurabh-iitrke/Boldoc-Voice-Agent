@@ -1,0 +1,152 @@
+# BolDoc on one server: Caddy (TLS), the talker, control, Postgres, Redis, Temporal, the document converter and
+# Hermes. Usage: cd infra && cp .env.example .env && (edit) && docker compose up -d --build
+services:
+  talker:
+    build:
+      context: ../..
+      dockerfile: apps/talker/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      SARVAM_API_KEY_FILE: /run/secrets/sarvam_key
+      PLIVO_AUTH_ID_FILE: /run/secrets/plivo_auth_id
+      PLIVO_AUTH_TOKEN_FILE: /run/secrets/plivo_auth_token
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ../secrets:/run/secrets:ro      # mode-600 files on the host, never in the image or repo
+    expose:
+      - "8090"
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: boldoc
+      POSTGRES_DB: boldoc
+      POSTGRES_PASSWORD: ${PG_PASSWORD:?set PG_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U boldoc -d boldoc"]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+
+  # Temporal: single-node dev server with a SQLite file on a volume (durable across restarts). The web UI is
+  # bound to localhost only: ssh -L 8233:127.0.0.1:8233 ubuntu@<box>, then http://localhost:8233
+  temporal:
+    image: temporalio/temporal:1.8.3
+    restart: unless-stopped
+    user: "0:0"
+    command: ["server", "start-dev", "--ip", "0.0.0.0", "--db-filename", "/data/temporal.db", "--ui-port", "8233",
+              "--log-level", "warn"]
+    volumes:
+      - temporaldata:/data
+    ports:
+      - "127.0.0.1:8233:8233"
+    expose:
+      - "7233"
+
+  control:
+    build:
+      context: ../..
+      dockerfile: apps/control/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://boldoc:${PG_PASSWORD}@postgres:5432/boldoc
+      REDIS_URL: redis://redis:6379/0
+      TEMPORAL_ADDRESS: temporal:7233
+      SARVAM_API_KEY_FILE: /run/secrets/sarvam_key
+      PLIVO_AUTH_ID_FILE: /run/secrets/plivo_auth_id
+      PLIVO_AUTH_TOKEN_FILE: /run/secrets/plivo_auth_token
+      HERMES_API_KEY_FILE: /run/secrets/hermes_api_key   # long documents are on when HERMES_URL is set (.env)
+      HERMES_MCP_KEY_FILE: /run/secrets/hermes_mcp_key
+      SERPER_API_KEY_FILE: /run/secrets/serper_key      # web research for long documents
+    volumes:
+      - ../secrets:/run/secrets:ro
+    networks: [default, writer, convert]  # writer: Hermes reaches control's tools; convert: the preview converter
+    expose:
+      - "8091"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      temporal:
+        condition: service_started
+
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file: .env
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../site:/srv/webroot:ro         # releases/<id> + current symlink (scripts/deploy_web.sh)
+      - ../site-admin:/srv/adminroot:ro # the admin console, the same way (scripts/deploy_admin_web.sh)
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - talker
+      - control
+
+  # Long documents (docs/design/hermes.md): Hermes Agent writes them through control's tools. Only on the
+  # internal "writer" network: no internet, no published port. Its data is tmpfs (briefs never outlive a restart); the
+  # config is rendered from the secrets by infra/hermes/render_config.py. Pinned by digest.
+  convert:
+    # Word, Excel and PowerPoint as PDFs for the document preview (apps/control/preview.py): LibreOffice on a network
+    # only control reaches, capped so a conversion never slows a live call, and the first to go if memory runs out
+    build: ./convert
+    restart: unless-stopped
+    command: ["gotenberg", "--api-timeout=40s", "--libreoffice-auto-start=true", "--log-level=warn"]
+    networks: [convert]
+    expose:
+      - "3000"
+    mem_limit: 1g
+    cpus: 0.6
+    oom_score_adj: 900
+
+  hermes:
+    image: nousresearch/hermes-agent:v0.22.4@sha256:7a69201726bc64db2072a1371557137c23312d29705cda2b8ea2a0214a50a4cf
+    restart: unless-stopped
+    command: ["gateway", "run"]
+    environment:
+      HERMES_HOME: /opt/data
+    volumes:
+      - ../secrets/hermes/config.yaml:/opt/data/config.yaml:ro
+      - ../secrets/hermes/hermes.env:/opt/data/.env:ro   # the API server's key (Hermes reads $HERMES_HOME/.env)
+    tmpfs:
+      - /opt/data:size=512m,uid=10000,gid=10000,mode=0700
+    networks: [writer]
+    expose:
+      - "8642"
+    mem_limit: 3g
+    oom_score_adj: 1000          # if memory runs out, Hermes goes, not a live call
+    profiles: ["hermes"]         # started on purpose: docker compose --profile hermes up -d hermes
+
+networks:
+  default: {}
+  writer:
+    internal: true
+  convert:
+    internal: true
+
+volumes:
+  pgdata:
+  redisdata:
+  temporaldata:
+  caddy_data:
+  caddy_config:

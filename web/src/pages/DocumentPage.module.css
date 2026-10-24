@@ -1,0 +1,109 @@
+/* A document: the console's page (inside its shell) or the SMS link (inside the site's header and footer). The
+   sheet is paper, like the downloaded file; everything around it is the system's (styles/chrome.module.css). */
+.publicMain { padding: clamp(28px, 4vw, 48px) var(--pad) 72px; min-width: 0; }
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+.side { position: sticky; top: 88px; display: grid; gap: 22px; }
+.title { font-size: clamp(26px, 2.4vw, 34px); font-weight: 600; line-height: 1.08; letter-spacing: -0.035em; overflow-wrap: anywhere; }
+.version { font: 500 13px/1.4 var(--sans); color: var(--ink-2); margin-top: -12px; }
+.stamp { justify-self: start; }
+
+.block { display: grid; gap: 12px; padding-top: 18px; border-top: 1px solid var(--rule); }
+.h2 { composes: label from "../styles/chrome.module.css"; font-weight: 400; }
+
+.downloads { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+/* local tweaks of the shared classes sit one level deeper, so they win whatever loads first */
+.dl { composes: btn btnLine from "../styles/chrome.module.css"; }
+.downloads .dl { width: 100%; justify-content: flex-start; padding: 0 16px; }
+.downloads .dl svg { width: 16px; height: 16px; fill: none; }
+.primary { composes: btnInk from "../styles/chrome.module.css"; }
+.downloads .disabled, .downloads .disabled:hover { color: var(--ink-2); cursor: not-allowed; transform: none; box-shadow: none; border-color: var(--rule); }
+.copy {
+  display: inline-flex; align-items: center; gap: 8px; justify-self: start; border: 0; background: none;
+  color: var(--ink); font: 550 15px/1.2 var(--sans); padding: 4px 0; cursor: pointer;
+}
+.copy:hover { text-decoration: underline; text-underline-offset: 3px; }
+.expiry { font: 500 13px/1.5 var(--sans); color: var(--ink-2); }
+
+.versions { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.versions li { display: grid; grid-template-columns: auto 1fr; column-gap: 12px; }
+.vNum { font-weight: 600; }
+.vWhen { font: 500 13px/1.6 var(--sans); color: var(--ink-2); text-align: right; }
+.vWhat { grid-column: 1 / -1; color: var(--ink-2); font-size: 15px; }
+
+/* the document itself: the landing demo's paper */
+.sheet {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-pane);
+  box-shadow: var(--shadow-page);
+  padding: clamp(28px, 6vw, 72px) clamp(24px, 6vw, 80px);
+  min-height: 70vh;
+}
+
+/* a link that can't open here, a document that isn't there, the wait: one card, as on sign-in */
+.focus { display: grid; justify-items: center; padding: clamp(24px, 8vh, 96px) 0; }
+.focusCard { composes: focusCard from "../styles/chrome.module.css"; }
+.focus .focusCard { width: min(100%, 480px); }
+.focusTitle { composes: focusTitle from "../styles/chrome.module.css"; }
+.focusLead { composes: focusLead from "../styles/chrome.module.css"; }
+.focusActions { composes: focusActions from "../styles/chrome.module.css"; }
+.inkBtn { composes: btn btnInk from "../styles/chrome.module.css"; }
+.lineBtn { composes: btn btnLine from "../styles/chrome.module.css"; }
+.loading { display: flex; align-items: center; gap: 10px; font: 400 14px/1.4 var(--sans); color: var(--ink-2); }
+/* a document being written: its outline on the sheet, quiet, until the pages arrive */
+.pending { min-height: 0; }
+.coverLead { font: 500 13px/1.4 var(--sans); color: var(--ink-2); margin-bottom: 18px; }
+.outline { margin: 0; padding-left: 1.6em; display: grid; gap: 12px; font: 400 17px/1.45 var(--serif, var(--sans));
+  color: var(--ink-2); }
+.outline li::marker { color: var(--ink-3, var(--ink-2)); font-variant-numeric: tabular-nums; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--voice); animation: pulse 1.4s var(--ease-io) infinite; }
+@keyframes pulse { 50% { opacity: 0.25; } }
+
+.shareActions { display: flex; flex-wrap: wrap; gap: 8px; }
+.newLink { display: grid; gap: 8px; }
+.linkText {
+  font: 500 13px/1.5 var(--sans); overflow-wrap: anywhere; padding: 8px 12px; border: 1px dashed var(--noise-2);
+  border-radius: var(--r-pane); color: var(--ink); background: var(--card);
+}
+.said { font: 500 13px/1.5 var(--sans); color: var(--ok); }
+.error { color: var(--danger); font-size: 15px; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .side { position: static; }
+  .downloads { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+}
+
+/* A long document's questions for the owner (the SMS link opens here): the one thing to do on this page. */
+.ask { border-top-color: var(--ink); }
+.questions { display: grid; gap: 16px; list-style: none; margin: 0; padding: 0; }
+.question { display: grid; gap: 8px; }
+.qText { font: 500 15px/1.4 var(--sans); color: var(--ink); }
+.qInput {
+  font: 400 16px/1.4 var(--sans); color: var(--ink); background: var(--card); border: 1px solid var(--rule);
+  border-radius: var(--r-btn); padding: 10px 12px; width: 100%; resize: vertical;
+  transition: border-color var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out);
+}
+.qInput:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px var(--rule-2); }
+.qAnswer { color: var(--ink-2); padding-left: 12px; border-left: 2px solid var(--ok); }
+.qActions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.qHint, .qNote { font-size: 13px; color: var(--ink-2); }
+
+/* The files as they download: the format tabs, then the pages */
+.preview { display: grid; gap: 16px; min-width: 0; }
+.formatTabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.formatTab {
+  padding: 7px 14px; border-radius: 999px; border: 1px solid var(--rule); background: var(--card);
+  color: var(--ink-2); font: 500 14px/1.3 var(--sans); cursor: pointer;
+  transition: border-color var(--t) var(--ease-out), color var(--t) var(--ease-out);
+}
+.formatTab:hover { border-color: var(--ink-2); color: var(--ink); }
+.formatTab:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.formatTabOn { border-color: var(--ink); color: var(--ink); }

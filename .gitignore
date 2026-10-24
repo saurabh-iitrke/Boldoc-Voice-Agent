@@ -1,0 +1,47 @@
+# --- secrets: never commit ---
+plivo_auth.txt
+sarvam_key.txt
+amazon_bedrock.txt
+*_key.txt
+*_auth.txt
+git_classic.txt
+*token*.txt
+*.token
+*.env
+.env*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# --- python ---
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# --- node / web ---
+node_modules/
+web/dist/
+web/dist-mock/
+
+# --- runtime data ---
+data/
+logs/
+*.log
+recordings/
+out/
+
+# --- test caches ---
+.hypothesis/
+*.tsbuildinfo
+web/dist-deploy/
+web/dist-admin/
+
+# visual review output (web/scripts/shots.mjs)
+web/shots/
+huggingface.txt
+.claude/worktrees/

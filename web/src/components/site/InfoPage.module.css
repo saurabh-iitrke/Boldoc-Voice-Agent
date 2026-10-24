@@ -1,0 +1,17 @@
+.page { padding: clamp(40px, 6vw, 80px) var(--pad) var(--section); }
+.head { max-width: 760px; display: grid; gap: 14px; }
+.title { font-size: var(--h-section); line-height: 0.98; letter-spacing: -0.05em; }
+.intro { color: var(--ink-2); font-size: var(--body); max-width: 60ch; }
+.updated { font: 500 13px/1.4 var(--sans); color: var(--ink-2); }
+.body { margin-top: 40px; max-width: 760px; font-size: 17px; line-height: 1.65; }
+.body h2 { font-size: 24px; letter-spacing: -0.025em; margin: 44px 0 10px; padding-top: 22px; border-top: 1px solid var(--rule); }
+.body h3 { font-size: 18px; letter-spacing: -0.01em; margin: 24px 0 6px; }
+.body p, .body ul, .body ol { margin: 0 0 14px; }
+.body ul, .body ol { padding-left: 22px; }
+.body li { margin-bottom: 6px; }
+.body li::marker { color: var(--ink-2); }
+.body a { text-decoration: underline; text-underline-offset: 3px; }
+.body table { width: 100%; border-collapse: collapse; margin: 6px 0 18px; font-size: 15px; }
+.body th { text-align: left; font: 500 13px/1.4 var(--sans); color: var(--ink-2); padding: 0 10px 8px 0; border-bottom: 1px solid var(--rule); }
+.body td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; }
+.body blockquote { margin: 0 0 14px; padding: 10px 16px; border-left: 3px solid var(--voice); background: var(--card); border-radius: 0 10px 10px 0; }

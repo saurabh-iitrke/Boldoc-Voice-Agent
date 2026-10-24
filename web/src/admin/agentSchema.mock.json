@@ -1,0 +1,824 @@
+{
+ "groups": [
+  {
+   "id": "call",
+   "label": "Call and voice",
+   "when": "From the next call"
+  },
+  {
+   "id": "timing",
+   "label": "Timing and waiting",
+   "when": "From the next call"
+  },
+  {
+   "id": "prices",
+   "label": "Prices and plan limits",
+   "when": "From the next charge or call admitted"
+  }
+ ],
+ "schema": [
+  {
+   "key": "noise_cancellation",
+   "group": "call",
+   "label": "Plivo noise cancellation",
+   "help": "Plivo cleans the caller's audio before BolDoc hears it.",
+   "kind": "bool",
+   "default": true,
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "noise_cancellation_level",
+   "group": "call",
+   "label": "Noise cancellation level",
+   "help": "Higher removes more background noise; lower if voices sound distorted.",
+   "kind": "int",
+   "default": 95,
+   "min": 60,
+   "max": 100,
+   "step": 1,
+   "unit": "",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "max_call_minutes",
+   "group": "call",
+   "label": "Longest call",
+   "help": "For signed-up callers; BolDoc says goodbye at the limit.",
+   "kind": "int",
+   "default": 30,
+   "min": 5,
+   "max": 30,
+   "step": 1,
+   "unit": "min",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "default_language",
+   "group": "call",
+   "label": "Language for a new caller",
+   "help": "BolDoc greets and talks in this until the caller uses another.",
+   "kind": "choice",
+   "default": "en-IN",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "en-IN",
+     "label": "English"
+    },
+    {
+     "value": "hinglish",
+     "label": "Hindi and Hinglish"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_hinglish",
+   "group": "call",
+   "label": "Voice: Hindi and Hinglish",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v4-flash/simran_enhi_customer",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v4-flash/simran_enhi_customer",
+     "label": "Simran (Hindi-English)"
+    },
+    {
+     "value": "bulbul:v4-flash/simran_hi_conversation",
+     "label": "Simran (Hindi, conversational)"
+    },
+    {
+     "value": "bulbul:v4-flash/kavya_hi_conversational",
+     "label": "Kavya"
+    },
+    {
+     "value": "bulbul:v4-flash/aparna_hi_customer",
+     "label": "Aparna"
+    },
+    {
+     "value": "bulbul:v4-flash/aarti_hi_customer",
+     "label": "Aarti"
+    },
+    {
+     "value": "bulbul:v4-flash/ishita_enhi_customer",
+     "label": "Ishita"
+    },
+    {
+     "value": "bulbul:v4-flash/shalini_enhi_customer",
+     "label": "Shalini"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_en-IN",
+   "group": "call",
+   "label": "Voice: English",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v4-flash/simran_en_customer",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v4-flash/simran_en_customer",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v4-flash/aparna_en_companion",
+     "label": "Aparna"
+    },
+    {
+     "value": "bulbul:v4-flash/sanchita_en_companion",
+     "label": "Sanchita"
+    },
+    {
+     "value": "bulbul:v4-flash/ishita_en_customer",
+     "label": "Ishita"
+    },
+    {
+     "value": "bulbul:v4-flash/simran_enhi_customer",
+     "label": "Simran (Hindi-English)"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_ta-IN",
+   "group": "call",
+   "label": "Voice: Tamil",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v3/priya",
+     "label": "Priya"
+    },
+    {
+     "value": "bulbul:v3/kavya",
+     "label": "Kavya"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_te-IN",
+   "group": "call",
+   "label": "Voice: Telugu",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v4-flash/kavitha_te_conversation",
+     "label": "Kavitha"
+    },
+    {
+     "value": "bulbul:v4-flash/pooja_te_conversation",
+     "label": "Pooja"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_kn-IN",
+   "group": "call",
+   "label": "Voice: Kannada",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v4-flash/chaitra_kn_conversation",
+     "label": "Chaitra"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_mr-IN",
+   "group": "call",
+   "label": "Voice: Marathi",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v4-flash/ishita_mr_conversational",
+     "label": "Ishita"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_bn-IN",
+   "group": "call",
+   "label": "Voice: Bengali",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v4-flash/roopa_bn_conversational",
+     "label": "Roopa"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_gu-IN",
+   "group": "call",
+   "label": "Voice: Gujarati",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v4-flash/pooja_gu_conversational",
+     "label": "Pooja"
+    },
+    {
+     "value": "bulbul:v4-flash/pooja_gu_customer",
+     "label": "Pooja (customer)"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_pa-IN",
+   "group": "call",
+   "label": "Voice: Punjabi",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_ml-IN",
+   "group": "call",
+   "label": "Voice: Malayalam",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v3/priya",
+     "label": "Priya"
+    },
+    {
+     "value": "bulbul:v3/kavya",
+     "label": "Kavya"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "voice_od-IN",
+   "group": "call",
+   "label": "Voice: Odia",
+   "help": "Measured clear on phone lines.",
+   "kind": "choice",
+   "default": "bulbul:v3/simran",
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [
+    {
+     "value": "bulbul:v3/simran",
+     "label": "Simran"
+    },
+    {
+     "value": "bulbul:v3/priya",
+     "label": "Priya"
+    },
+    {
+     "value": "bulbul:v3/kavya",
+     "label": "Kavya"
+    }
+   ],
+   "applies": "talker"
+  },
+  {
+   "key": "unfinished_hold_s",
+   "group": "timing",
+   "label": "Wait through an unfinished sentence",
+   "help": "How long BolDoc stays quiet when the caller stops mid-sentence.",
+   "kind": "float",
+   "default": 3.5,
+   "min": 2.0,
+   "max": 5.0,
+   "step": 0.1,
+   "unit": "s",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "listening_sound",
+   "group": "timing",
+   "label": "\"हम्म\" while the caller pauses",
+   "help": "A short listening sound, so a pause doesn't feel like a dropped line.",
+   "kind": "bool",
+   "default": true,
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "listening_sound_after_s",
+   "group": "timing",
+   "label": "Say \"हम्म\" after",
+   "help": "",
+   "kind": "float",
+   "default": 1.2,
+   "min": 0.8,
+   "max": 2.0,
+   "step": 0.1,
+   "unit": "s",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "short_answer_s",
+   "group": "timing",
+   "label": "A short answer ends the turn after",
+   "help": "\"Haan\", \"PDF\", a name: BolDoc answers after this much silence.",
+   "kind": "float",
+   "default": 0.5,
+   "min": 0.3,
+   "max": 1.0,
+   "step": 0.05,
+   "unit": "s",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "reask_after_s",
+   "group": "timing",
+   "label": "Ask an unanswered question again after",
+   "help": "",
+   "kind": "int",
+   "default": 6,
+   "min": 4,
+   "max": 15,
+   "step": 1,
+   "unit": "s",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "idle_check_after_s",
+   "group": "timing",
+   "label": "\"Anything else?\" after quiet",
+   "help": "Once the work is done.",
+   "kind": "int",
+   "default": 12,
+   "min": 8,
+   "max": 30,
+   "step": 1,
+   "unit": "s",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "idle_goodbye_after_s",
+   "group": "timing",
+   "label": "Then a goodbye after",
+   "help": "",
+   "kind": "int",
+   "default": 10,
+   "min": 6,
+   "max": 30,
+   "step": 1,
+   "unit": "s",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "offer_hang_up",
+   "group": "timing",
+   "label": "Offer to hang up for a big document",
+   "help": "\"Call rakh dijiye, ready hote hi SMS pe link bhej dungi\".",
+   "kind": "bool",
+   "default": true,
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "wait_tone",
+   "group": "timing",
+   "label": "Wait tone",
+   "help": "Two soft notes every few seconds while a caller waits on the line.",
+   "kind": "bool",
+   "default": true,
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "progress_lines",
+   "group": "timing",
+   "label": "Say a big document's progress",
+   "help": "\"9 mein se 4 hisse likh liye hain\", only while the caller is quiet.",
+   "kind": "bool",
+   "default": true,
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "progress_every_s",
+   "group": "timing",
+   "label": "Progress at most every",
+   "help": "",
+   "kind": "int",
+   "default": 40,
+   "min": 20,
+   "max": 120,
+   "step": 5,
+   "unit": "s",
+   "choices": [],
+   "applies": "talker"
+  },
+  {
+   "key": "big_documents",
+   "group": "timing",
+   "label": "Big documents written by Hermes",
+   "help": "Off: reports, plans and decks are written by the short writer.",
+   "kind": "bool",
+   "default": true,
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "web_research",
+   "group": "timing",
+   "label": "Web research for big documents",
+   "help": "For the types that use it (reports, plans, decks).",
+   "kind": "bool",
+   "default": true,
+   "min": null,
+   "max": null,
+   "step": null,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "price_minute",
+   "group": "prices",
+   "label": "A call minute",
+   "help": "",
+   "kind": "int",
+   "default": 4,
+   "min": 1,
+   "max": 20,
+   "step": 1,
+   "unit": "₹",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "price_doc",
+   "group": "prices",
+   "label": "A new document",
+   "help": "",
+   "kind": "int",
+   "default": 10,
+   "min": 1,
+   "max": 100,
+   "step": 1,
+   "unit": "₹",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "price_edit",
+   "group": "prices",
+   "label": "A change to a document",
+   "help": "Undo is always free.",
+   "kind": "int",
+   "default": 2,
+   "min": 0,
+   "max": 20,
+   "step": 1,
+   "unit": "₹",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "price_big_doc",
+   "group": "prices",
+   "label": "A big document",
+   "help": "",
+   "kind": "int",
+   "default": 60,
+   "min": 10,
+   "max": 500,
+   "step": 1,
+   "unit": "₹",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "signup_bonus",
+   "group": "prices",
+   "label": "Sign-up bonus",
+   "help": "Added once per number when it signs up.",
+   "kind": "int",
+   "default": 2000,
+   "min": 0,
+   "max": 5000,
+   "step": 1,
+   "unit": "₹",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "trial_calls",
+   "group": "prices",
+   "label": "Free calls before sign-up",
+   "help": "",
+   "kind": "int",
+   "default": 3,
+   "min": 0,
+   "max": 10,
+   "step": 1,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "trial_call_minutes",
+   "group": "prices",
+   "label": "Minutes in a free call",
+   "help": "",
+   "kind": "int",
+   "default": 5,
+   "min": 1,
+   "max": 15,
+   "step": 1,
+   "unit": "min",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "trial_docs_per_call",
+   "group": "prices",
+   "label": "New documents in a free call",
+   "help": "",
+   "kind": "int",
+   "default": 2,
+   "min": 1,
+   "max": 5,
+   "step": 1,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "trial_edits_per_doc",
+   "group": "prices",
+   "label": "Changes to a free call's document",
+   "help": "",
+   "kind": "int",
+   "default": 3,
+   "min": 0,
+   "max": 10,
+   "step": 1,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "burst_calls",
+   "group": "prices",
+   "label": "Calls from one number in any 30 minutes",
+   "help": "",
+   "kind": "int",
+   "default": 3,
+   "min": 1,
+   "max": 10,
+   "step": 1,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "trial_calls_per_day",
+   "group": "prices",
+   "label": "Free calls from one number a day",
+   "help": "",
+   "kind": "int",
+   "default": 3,
+   "min": 1,
+   "max": 10,
+   "step": 1,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "trial_minutes_per_day",
+   "group": "prices",
+   "label": "Free minutes for one number a day",
+   "help": "",
+   "kind": "int",
+   "default": 10,
+   "min": 1,
+   "max": 60,
+   "step": 1,
+   "unit": "min",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "calls_per_day",
+   "group": "prices",
+   "label": "Signed-up calls from one number a day",
+   "help": "",
+   "kind": "int",
+   "default": 20,
+   "min": 1,
+   "max": 100,
+   "step": 1,
+   "unit": "",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "minutes_per_day",
+   "group": "prices",
+   "label": "Signed-up minutes for one number a day",
+   "help": "",
+   "kind": "int",
+   "default": 120,
+   "min": 10,
+   "max": 600,
+   "step": 1,
+   "unit": "min",
+   "choices": [],
+   "applies": "control"
+  },
+  {
+   "key": "trial_minutes_budget",
+   "group": "prices",
+   "label": "All free callers' minutes a day",
+   "help": "Together, before trial calls are turned away.",
+   "kind": "int",
+   "default": 300,
+   "min": 10,
+   "max": 2000,
+   "step": 1,
+   "unit": "min",
+   "choices": [],
+   "applies": "control"
+  }
+ ],
+ "defaults": {
+  "noise_cancellation": true,
+  "noise_cancellation_level": 95,
+  "max_call_minutes": 30,
+  "default_language": "en-IN",
+  "voice_hinglish": "bulbul:v4-flash/simran_enhi_customer",
+  "voice_en-IN": "bulbul:v4-flash/simran_en_customer",
+  "voice_ta-IN": "bulbul:v3/simran",
+  "voice_te-IN": "bulbul:v3/simran",
+  "voice_kn-IN": "bulbul:v3/simran",
+  "voice_mr-IN": "bulbul:v3/simran",
+  "voice_bn-IN": "bulbul:v3/simran",
+  "voice_gu-IN": "bulbul:v3/simran",
+  "voice_pa-IN": "bulbul:v3/simran",
+  "voice_ml-IN": "bulbul:v3/simran",
+  "voice_od-IN": "bulbul:v3/simran",
+  "unfinished_hold_s": 3.5,
+  "listening_sound": true,
+  "listening_sound_after_s": 1.2,
+  "short_answer_s": 0.5,
+  "reask_after_s": 6,
+  "idle_check_after_s": 12,
+  "idle_goodbye_after_s": 10,
+  "offer_hang_up": true,
+  "wait_tone": true,
+  "progress_lines": true,
+  "progress_every_s": 40,
+  "big_documents": true,
+  "web_research": true,
+  "price_minute": 4,
+  "price_doc": 10,
+  "price_edit": 2,
+  "price_big_doc": 60,
+  "signup_bonus": 2000,
+  "trial_calls": 3,
+  "trial_call_minutes": 5,
+  "trial_docs_per_call": 2,
+  "trial_edits_per_doc": 3,
+  "burst_calls": 3,
+  "trial_calls_per_day": 3,
+  "trial_minutes_per_day": 10,
+  "calls_per_day": 20,
+  "minutes_per_day": 120,
+  "trial_minutes_budget": 300
+ }
+}

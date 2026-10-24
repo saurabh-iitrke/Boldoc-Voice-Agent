@@ -1,0 +1,23 @@
+.stamp {
+  --c: var(--stamp);
+  display: inline-grid;
+  justify-items: center;
+  gap: 1px;
+  padding: 6px 12px 5px;
+  border: 2px solid var(--c);
+  border-radius: 6px;
+  outline: 1px solid var(--c);
+  outline-offset: 2px;
+  color: var(--c);
+  transform: rotate(-4deg);
+  font-family: var(--font-ui);
+  line-height: 1.15;
+  /* a little ink unevenness, as real rubber stamps have */
+  mask-image: radial-gradient(circle at 30% 40%, #000 60%, rgb(0 0 0 / 0.82) 100%);
+  user-select: none;
+}
+.head { font-size: 1.05rem; font-weight: 800; letter-spacing: 0.02em; }
+.sub { font-size: 0.72rem; font-weight: 600; }
+
+.small { transform: rotate(-3deg) scale(0.86); transform-origin: left center; }
+.failed { --c: var(--margin); }

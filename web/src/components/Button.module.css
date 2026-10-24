@@ -1,0 +1,37 @@
+/* The landing's buttons (styles/chrome.module.css) for forms and actions: ink for the one thing to do next, a line
+   for the others, quiet for a way out. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid transparent; border-radius: var(--r-btn);
+  font: 550 16px/1 var(--sans); white-space: nowrap; font-variant-numeric: tabular-nums;
+  cursor: pointer; text-decoration: none; -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t) var(--ease-out), border-color var(--t) var(--ease-out),
+    box-shadow var(--t) var(--ease-out), transform var(--t) var(--ease-out);
+}
+.btn:disabled { cursor: not-allowed; opacity: 0.5; }
+.btn[aria-busy="true"] { opacity: 0.85; cursor: progress; }
+.btn:active:not(:disabled) { transform: scale(0.97); transition-duration: var(--t-fast); }
+
+.md { min-height: 44px; padding: 0 18px; }
+.lg { min-height: 50px; padding: 0 22px; font-size: 17px; }
+
+.primary { background: var(--ink); color: var(--on-ink); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset; }
+.primary:hover:not(:disabled) {
+  background: var(--ink-hover); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, var(--shadow-btn-hover);
+  transform: translateY(-1px);
+}
+
+.secondary { background: var(--card); color: var(--ink); border-color: var(--rule); }
+.secondary:hover:not(:disabled) {
+  border-color: var(--noise); box-shadow: 0 10px 22px -16px rgba(18, 18, 18, 0.45); transform: translateY(-1px);
+}
+
+.quiet { background: transparent; color: var(--ink); padding-inline: 8px; min-height: 36px; font-weight: 500; }
+.quiet:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 3px; }
+
+.spinner {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid currentColor; border-right-color: transparent;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

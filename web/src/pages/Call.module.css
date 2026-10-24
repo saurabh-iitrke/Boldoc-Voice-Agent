@@ -1,0 +1,170 @@
+/* Talk to BolDoc (design: the Claude Design canvas "BolDoc console and admin", row "Browser call"). One screen:
+   the bar, the middle (start page, the call, or what came of it), and the controls while the line is open. */
+.screen {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+/* the landing's bar: the brand, the call's pill in the middle, the call's language (or the way back) at the end */
+.header { composes: bar from "../styles/chrome.module.css"; }
+.brand { composes: brand from "../styles/chrome.module.css"; }
+.headEnd { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: 4px; min-width: 0; }
+.navLink { composes: navLink from "../styles/chrome.module.css"; }
+.talksIn { font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+.talksIn strong { color: var(--ink); font-weight: 550; }
+
+/* ------------------------------------------------------------------ before the call */
+.ready {
+  min-height: 0; overflow-y: auto; width: 100%; max-width: 1180px; margin: 0 auto; box-sizing: border-box;
+  padding: clamp(24px, 4vw, 48px) 24px 56px;
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; align-content: flex-start;
+}
+.centre { min-height: 0; overflow-y: auto; display: grid; place-items: center; padding: clamp(20px, 5vw, 56px) 24px; }
+.sheet {
+  flex: 999 1 520px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px;
+  padding: clamp(24px, 3.4vw, 36px); background: var(--card); border: 1px solid var(--rule); border-radius: 22px;
+  box-shadow: var(--shadow-card);
+}
+.centre .sheet { width: min(100%, 580px); flex: none; }
+.titles { display: grid; gap: 10px; }
+.title { margin: 0; font-size: clamp(34px, 4vw, 48px); font-weight: 600; line-height: 1; letter-spacing: -0.045em; }
+.lede { margin: 0; color: var(--ink-2); font-size: 18px; line-height: 1.5; max-width: 52ch; }
+.mic {
+  display: flex; align-items: center; gap: 12px; margin: 0; padding: 14px 16px;
+  border-radius: 14px; background: var(--rule-2); font-size: 15px; line-height: 1.45;
+}
+.mic svg { flex: none; color: var(--voice-text); }
+.mic strong { font-weight: 600; }
+
+.startBlock { display: grid; gap: 10px; }
+.start, .startLink {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 58px; padding: 0 24px;
+  border: 0; border-radius: 14px; background: var(--ink); color: var(--on-ink); text-decoration: none;
+  font: 600 18px/1 var(--sans); cursor: pointer;
+  transition: background-color var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out), transform var(--t) var(--ease-out);
+}
+.start:hover, .startLink:hover { color: var(--on-ink); background: var(--ink-hover); box-shadow: 0 16px 30px -16px rgba(18, 18, 18, 0.7); transform: translateY(-1px); }
+.start:active, .startLink:active { transform: scale(0.98); transition-duration: var(--t-fast); }
+.start:disabled { cursor: progress; opacity: 0.8; transform: none; box-shadow: none; }
+.startBlock .start { width: 100%; }
+.note { margin: 0; color: var(--ink-2); font-size: 14px; line-height: 1.5; text-align: center; }
+.note a { color: var(--ink); }
+
+.alt {
+  margin-top: auto; display: flex; align-items: center; gap: 16px; padding-top: 18px; border-top: 1px solid var(--rule-2);
+  color: var(--ink-2); font-size: 15px; line-height: 1.5;
+}
+.alt p { margin: 0; }
+.alt a { color: var(--ink); font-weight: 600; font-family: var(--mono); font-size: 14.5px; white-space: nowrap; }
+
+/* the start page's dark side: what happens on the call */
+.steps {
+  flex: 1 1 400px; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 26px;
+  padding: 36px 32px; background: var(--slab); color: var(--on-slab); border-radius: 22px;
+}
+.ring { position: relative; width: 132px; height: 132px; align-self: center; margin: 12px 0; }
+.ringWave {
+  position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--voice);
+  animation: wave 2.4s var(--ease-out) infinite;
+}
+.ringB { animation-delay: 0.8s; }
+.ringC { animation-delay: 1.6s; }
+@keyframes wave { 0% { transform: scale(0.82); opacity: 0.9; } 100% { transform: scale(1.35); opacity: 0; } }
+.ringCore { position: absolute; inset: 22px; border-radius: 50%; background: var(--voice); color: #fff; display: grid; place-items: center; }
+.stepList { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px; }
+.stepList li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; line-height: 1.5; }
+.stepList strong { font-weight: 600; }
+.stepNo {
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font: 600 14px/1 var(--sans);
+  color: var(--voice); background: color-mix(in srgb, var(--on-slab) 12%, transparent);
+}
+.stepSub { color: var(--on-slab-2); }
+
+/* a problem: the same card, its icon in the caller's orange */
+.problem .title { font-size: clamp(30px, 3.4vw, 40px); letter-spacing: -0.04em; }
+.problemIcon {
+  width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+  background: var(--voice-wash); color: var(--voice-text);
+}
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.actions .start, .actions .startLink { height: 50px; font-size: 16px; }
+.quietLink { color: var(--ink); font-weight: 550; padding: 8px 4px; }
+.quietLink:hover { color: var(--voice-text); }
+
+/* ------------------------------------------------------------------ the call */
+.desk {
+  min-height: 0; display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 20px;
+  width: 100%; max-width: 1320px; margin: 0 auto; box-sizing: border-box; padding: 24px 24px 20px;
+}
+.left { min-height: 0; display: flex; flex-direction: column; gap: 16px; }
+.right { min-height: 0; overflow-y: auto; border-radius: 20px; scrollbar-gutter: stable; }
+.docInline { flex: 1; min-height: 0; overflow-y: auto; border-radius: 20px; }
+
+/* BolDoc: the page's one dark surface during the call */
+.boldoc {
+  flex: none; display: flex; align-items: center; gap: 20px; padding: 22px 24px; border-radius: 20px;
+  min-height: 180px; box-sizing: border-box;   /* the tallest state's height, so the conversation never jumps */
+  background: var(--slab); color: var(--on-slab);
+}
+.boldocText { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.boldocState { margin: 0; font: 600 22px/1.2 var(--sans); letter-spacing: -0.02em; }
+.boldocHint { margin: 0; font-size: 15px; line-height: 1.4; color: var(--on-slab-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chip {
+  padding: 3px 9px; border-radius: 999px; font: 500 12.5px/1.4 var(--sans); color: var(--on-slab-3);
+  background: color-mix(in srgb, var(--on-slab) 10%, transparent);
+  transition: background-color var(--t) var(--ease-out), color var(--t) var(--ease-out);
+}
+.chipOn { background: var(--voice); color: #fff; font-weight: 550; }
+
+
+.footer { border-top: 1px solid var(--rule); background: color-mix(in srgb, var(--panel) 94%, transparent); backdrop-filter: blur(8px); }
+
+/* the phone's way to the document: a card under the conversation, opening the document as a sheet */
+
+
+/* a desktop: the start page's two panels fill the screen's height, the phone line at the foot of the first */
+@media (min-width: 861px) {
+  .ready { align-content: stretch; }
+  .sheet, .steps { max-height: 860px; }
+}
+
+/* ------------------------------------------------------------------ phones */
+@media (max-width: 860px) {
+  .header.inCall { padding-inline: 16px; gap: 12px; }
+  .inCall .brand { display: none; }   /* in a call the bar holds the pill and the language */
+  .inCall > :nth-child(2) { grid-column: 1; justify-self: start; }
+  .ready { padding: 20px 16px 40px; }
+  .sheet, .steps { flex-basis: 100%; }
+  .steps { padding: 26px 22px; }
+  .ring { width: 104px; height: 104px; margin: 4px 0; }
+  .ringCore { inset: 18px; }
+  .centre { place-items: start center; padding: 20px 16px; }
+  .alt a { white-space: normal; }
+
+  .desk { grid-template-columns: 1fr; padding: 12px 16px 10px; gap: 0; }
+  .left { gap: 12px; }
+  .boldoc { padding: 14px 16px; gap: 14px; border-radius: 18px; min-height: 0; }
+  .boldocState { font-size: 17px; }
+  .boldocHint { font-size: 13.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ringWave { animation: none; opacity: 0.25; transform: scale(1.1); }
+  .start:hover, .startLink:hover { transform: none; }
+}
+
+/* a call's documents, one tab each, above the one shown */
+.docTabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.docTab {
+  display: inline-flex; align-items: baseline; gap: 8px; max-width: 100%; padding: 7px 12px; border-radius: 999px;
+  border: 1px solid var(--rule); background: var(--card); color: var(--ink-2); font: 500 13px/1.3 var(--sans);
+  cursor: pointer; transition: border-color var(--t) var(--ease-out), color var(--t) var(--ease-out);
+}
+.docTab:hover { border-color: var(--ink-2); color: var(--ink); }
+.docTab:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.docTabOn { border-color: var(--ink); color: var(--ink); }
+.docTabTitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 28ch; }
+.docTabMeta { color: var(--ink-2); font-variant-numeric: tabular-nums; }

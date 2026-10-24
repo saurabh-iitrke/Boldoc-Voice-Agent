@@ -1,0 +1,77 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:   # control-plane tests run against a real Postgres, same major version as the server
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 2s --health-timeout 5s --health-retries 30
+    env:
+      TEST_DATABASE_URL: postgresql://postgres:ci@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: System deps (PDF shaping + Indic fonts) — same as the EC2 server
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b fonts-noto-core fonts-noto-extra
+      - name: Python deps
+        run: |
+          pip install "pydantic>=2.7" "python-docx>=1.1" "openpyxl>=3.1" "python-pptx>=1.0" \
+                      "fonttools>=4.50" "pypdf>=4.2" "weasyprint>=62" "hypothesis>=6.100" "pytest>=8" "ruff>=0.6" \
+                      "fastapi==0.115.6" "httpx>=0.27" "asyncpg>=0.29" "phonenumbers>=8.13" "loguru>=0.7" \
+                      "pipecat-ai==1.13.0" "temporalio==1.33.0" "redis==8.1.0" "fakeredis==2.38.0" \
+                      "argon2-cffi>=23.1" "sarvamai==0.1.28" "plivo>=4.55"
+      - name: Lint
+        run: ruff check .
+      - name: Tests (PDF + glyph-coverage tests run here; they skip on macOS dev boxes)
+        run: pytest -rs
+      - name: Secret scan of the pushed tree
+        run: |
+          if git grep -nE 'ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{40,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----' -- . ':!scripts/secret_scan.sh' ':!.github/workflows/ci.yml'; then
+            echo "credential-like string committed"; exit 1
+          fi
+
+  web:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Production build
+        run: npm run build
+      - name: Admin console build (a bundle of its own; the site's must not carry a line of it)
+        run: |
+          npx vite build --config vite.admin.config.ts
+          ! grep -rl "admin/api" dist
+      - name: Smoke-test every screen (preview-mode build, headless Chromium; fails on any page error)
+        run: |
+          VITE_API_MODE=mock npx vite build --outDir dist-mock
+          npx vite preview --outDir dist-mock --port 4173 --strictPort &
+          npx playwright install --with-deps chromium
+          for i in $(seq 1 30); do curl -sf http://localhost:4173/ >/dev/null && break; sleep 1; done
+          node scripts/shots.mjs http://localhost:4173 /tmp/shots

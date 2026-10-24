@@ -1,0 +1,62 @@
+/* Balance (canvas artboard "Balance"): the money in ₹ on the page's one dark surface, what things cost, the history. */
+.h1 { font-size: clamp(38px, 4.4vw, 56px); font-weight: 600; line-height: 1; letter-spacing: -0.045em; }
+.lede { margin-top: 12px; max-width: 60ch; font-size: 18px; color: var(--ink-2); }
+.error { margin-top: 16px; color: var(--danger); }
+.h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.note { font-size: 14px; color: var(--ink-2); }
+
+.top { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; }
+.slab {
+  flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 28px; border-radius: var(--r-card);
+  background: var(--slab); color: var(--on-slab);
+}
+.slabLabel { font-size: 15px; font-weight: 550; color: var(--on-slab-2); }
+.big { font-size: clamp(56px, 6vw, 76px); font-weight: 600; line-height: 1; letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums; }
+.rupee { color: var(--voice); }
+.slabNote { font-size: 16px; color: var(--on-slab-2); }
+.add { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--slab-rule); display: grid; gap: 12px; }
+.packs { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.packs li {
+  display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: var(--r-btn);
+  border: 1px solid var(--slab-rule); color: var(--on-slab-3); font: 550 15px/1 var(--sans); cursor: not-allowed;
+}
+
+.card {
+  composes: card from "../styles/chrome.module.css";
+  flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 28px;
+}
+.prices { margin: 8px 0 0; }
+.prices > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid var(--rule-2); }
+.prices dt { color: var(--ink); }
+.prices dd { margin: 0; font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gift { margin-top: auto; padding-top: 14px; display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--ink-2); }
+.gift::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--voice); flex: none; }
+
+.history { composes: card from "../styles/chrome.module.css"; margin-top: 24px; overflow: hidden; }
+.historyHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 12px;
+  padding: 22px 24px 14px; }
+.history > .note { padding: 0 24px 22px; }
+.tableBox { overflow-x: auto; }
+.table { width: 100%; min-width: 600px; border-collapse: collapse; font-size: 15px; }
+.table th { text-align: left; font: 500 13px/1.4 var(--sans); color: var(--ink-2); padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+.table td { padding: 13px 12px; border-bottom: 1px solid var(--rule-2); }
+.table th:first-child, .table td:first-child { padding-left: 24px; }
+.table th:last-child, .table td:last-child { padding-right: 24px; }
+.table tbody tr:last-child td { border-bottom: 0; }
+.table tbody tr { transition: background-color var(--t-fast) var(--ease-out); }
+.table tbody tr:hover { background: var(--row-wash); }
+.when { color: var(--ink-2); white-space: nowrap; }
+.num { text-align: right !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.amount { font-weight: 600; color: var(--ink); }
+.plus { color: var(--voice-text); }
+.after { color: var(--ink-2); }
+
+@media (max-width: 640px) {
+  .top { margin-top: 24px; gap: 16px; }
+  .slab, .card { padding: 22px 20px; }
+  .historyHead { padding: 18px 20px 12px; }
+  .table th:first-child, .table td:first-child { padding-left: 20px; }
+  .table th:last-child, .table td:last-child { padding-right: 20px; }
+}

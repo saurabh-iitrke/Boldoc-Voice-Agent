@@ -1,0 +1,16 @@
+/* The header's middle: one pill, orange dot while the line is open. */
+.pill {
+  display: inline-flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%;
+  padding: 6px 14px 6px 12px; border-radius: 999px; background: var(--card); border: 1px solid var(--rule);
+}
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--noise); flex: none; }
+.live { background: var(--voice); animation: pulse 1.2s ease-in-out infinite; }
+.warn { animation-duration: 0.6s; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+.state { font: 600 15px/1.2 var(--sans); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.time { font: 500 14px/1 var(--mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.demo {
+  padding: 3px 8px; border-radius: var(--r-chip); background: var(--rule-2); color: var(--ink-2);
+  font: 500 12.5px/1 var(--sans); white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) { .live { animation: none; } }

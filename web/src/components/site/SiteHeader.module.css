@@ -1,0 +1,40 @@
+/* The landing's bar, shared by every page (styles/chrome.module.css) */
+.header { composes: bar from "../../styles/chrome.module.css"; }
+.brand { composes: brand from "../../styles/chrome.module.css"; }
+.nav { display: flex; gap: 4px; }
+.navLink { composes: navLink from "../../styles/chrome.module.css"; }
+.end { composes: end from "../../styles/chrome.module.css"; }
+.cta {
+  height: 34px; padding: 0 14px; border: 0; border-radius: var(--r-btn-sm); background: var(--ink); color: #fff;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; font: 550 14px/1 var(--sans); text-decoration: none;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+  transition: transform var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out), background-color var(--t) var(--ease-out);
+}
+.cta:hover { color: #fff; background: #262625; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset, var(--shadow-btn-hover); transform: translateY(-1px); }
+.cta:active { transform: scale(0.97); transition-duration: var(--t-fast); }
+.cta svg { width: 13px; height: 13px; fill: currentColor; }
+.ctaPhone { display: none; }
+.menuButton {
+  display: none; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--rule); background: var(--card);
+  align-items: center; justify-content: center; cursor: pointer;
+}
+.burger, .burger::before { display: block; width: 18px; height: 1.6px; background: var(--ink); border-radius: 2px; position: relative;
+  transition: transform var(--t) var(--ease-out); }
+.burger { transform: translateY(-3.5px); }
+.burger::before { content: ""; position: absolute; top: 7px; }
+.burger[data-open="true"] { transform: translateY(0) rotate(45deg); }
+.burger[data-open="true"]::before { top: 0; transform: rotate(-90deg); }
+.menu {
+  position: absolute; top: 64px; left: 0; right: 0; display: grid; gap: 2px; padding: 12px var(--pad) 18px;
+  background: var(--panel); border-bottom: 1px solid var(--rule); box-shadow: 0 24px 40px -32px rgba(0, 0, 0, 0.4);
+}
+.menu[hidden] { display: none; }
+.menu a { padding: 14px 4px; font: 550 18px/1.2 var(--sans); color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule-2); }
+
+@media (max-width: 860px) {
+  .nav, .signIn { display: none; }
+  .ctaDesktop { display: none; }
+  .ctaPhone { display: inline-flex; height: 40px; padding: 0 16px; font-size: 15px; }
+  .menuButton { display: inline-flex; }
+}

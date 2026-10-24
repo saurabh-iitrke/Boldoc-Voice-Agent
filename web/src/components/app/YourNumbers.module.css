@@ -1,0 +1,23 @@
+.list { margin: 4px 0 0; padding: 0; list-style: none; max-width: 760px; border-top: 1px solid var(--rule); }
+.row {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px;
+  min-height: 60px; padding: 10px 0; border-bottom: 1px solid var(--rule-2);
+}
+.number { font-size: 18px; font-weight: 500; letter-spacing: 0.01em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.note { font: 500 13px/1.4 var(--sans); color: var(--ink-2); }
+.confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 15px; color: var(--ink-2); }
+.add { display: grid; gap: 16px; max-width: 440px; margin-top: 4px; }
+.hint { margin: 0; color: var(--ink-2); font-size: 15px; }
+.buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.link {
+  border: 0; background: none; padding: 0; color: var(--ink); font: inherit; font-weight: 550; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px;
+}
+.link:hover { text-decoration-color: var(--voice); }
+.link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+.dev { font: 500 13px/1.4 var(--sans); color: var(--ink-2); border-top: 1px dashed var(--rule); padding-top: 12px; }
+
+@media (max-width: 480px) {
+  .row { align-items: flex-start; flex-direction: column; }
+  .confirm span { flex-basis: 100%; }
+}

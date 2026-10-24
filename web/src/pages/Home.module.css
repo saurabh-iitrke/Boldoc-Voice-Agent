@@ -1,0 +1,185 @@
+/* Console Home (Claude Design canvas "BolDoc console and admin", artboards Main and HomePhone): the landing's orange,
+   grey and black. Ink for the one thing to do, orange where the pointer is, grey for the rest. */
+.hello { font-size: clamp(38px, 4.4vw, 56px); font-weight: 600; line-height: 1; letter-spacing: -0.045em; }
+.lede { margin-top: 12px; max-width: 60ch; font-size: 18px; color: var(--ink-2); }
+.muted { color: var(--ink-2); }
+
+/* Making a document comes first; the balance sits beside it, or under it when there's no room */
+.top { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; }
+/* Call me open: only its card grows; the balance keeps its height */
+.top:has([role="group"]) { align-items: flex-start; }
+.make {
+  composes: card from "../styles/chrome.module.css";
+  flex: 999 1 640px; min-width: 0; padding: 24px; display: grid; gap: 18px; align-content: start;
+}
+.makeHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+.cardTitle { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+.makeNote { font-size: 14px; color: var(--ink-2); }
+
+/* the three ways to start: a card each, its icon on a tile (black, grey, orange), what happens, and its button */
+.ways { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px; }
+.ways > li { display: flex; min-width: 0; }
+.way {
+  flex: 1; min-width: 0; min-height: 236px; display: flex; flex-direction: column; gap: 12px; padding: 20px;
+  border: 1px solid var(--rule); border-radius: 16px; background: var(--card); color: var(--ink);
+  font: inherit; text-align: left; text-decoration: none; cursor: pointer;
+  transition: transform var(--t) var(--ease-out), border-color var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out);
+}
+.way:hover { color: var(--ink); transform: translateY(-3px); border-color: var(--voice); box-shadow: var(--voice-glow); }
+.way[aria-expanded="true"] { border-color: var(--voice); }
+.wayIcon {
+  width: 48px; height: 48px; flex: none; border-radius: 14px; display: grid; place-items: center;
+  background: var(--rule-2); color: var(--ink);
+  transition: background-color var(--t) var(--ease-out), color var(--t) var(--ease-out);
+}
+.way[data-tone="ink"] .wayIcon { background: var(--slab); color: var(--on-slab); }
+.way[data-tone="voice"] .wayIcon { background: var(--voice-wash); color: var(--voice-text); }
+.way:hover .wayIcon, .way[aria-expanded="true"] .wayIcon { background: var(--voice); color: #fff; }
+.wayText { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.wayTitle { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+.waySub { font-size: 15px; color: var(--ink); }
+.number { font-family: var(--mono); font-size: 14.5px; font-variant-numeric: tabular-nums; }
+.wayNote { font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.wayNote strong { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.wayGo {
+  margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; height: 40px; padding: 0 16px;
+  border: 1px solid var(--rule); border-radius: var(--r-btn); background: var(--card); color: var(--ink);
+  font: 550 15px/1 var(--sans); white-space: nowrap;
+  transition: background-color var(--t) var(--ease-out), color var(--t) var(--ease-out), border-color var(--t) var(--ease-out);
+}
+.wayGo[data-primary] { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+.way:hover .wayGo { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+.way:hover .wayGo[data-primary] { background: var(--ink-hover); }
+.chev { display: none; }
+
+/* the balance: the page's one dark surface, ₹ in orange */
+.slab {
+  flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: var(--r-card);
+  background: var(--slab); color: var(--on-slab);
+}
+.slabLabel { font-size: 15px; font-weight: 550; color: var(--on-slab-2); }
+.slabBig { font-size: clamp(52px, 5vw, 64px); font-weight: 600; line-height: 1; letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums; }
+.rupee { color: var(--voice); }
+.slabUnit { font-size: 24px; letter-spacing: -0.02em; }
+.slabNote { font-size: 16px; color: var(--on-slab-2); }
+.prices {
+  margin: auto 0 0; padding-top: 18px; border-top: 1px solid var(--slab-rule); display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;
+}
+.prices > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.prices dd { order: -1; }   /* the price on top, what it's for under it (top-aligned when a label wraps) */
+.prices dt { font-size: 13px; color: var(--on-slab-3); }
+.prices dd { margin: 0; font-size: 17px; font-weight: 550; color: var(--on-slab); font-variant-numeric: tabular-nums; }
+.slabLinks { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; padding-top: 8px; font-size: 15px; }
+.slabLinks a { color: var(--on-slab); font-weight: 550; text-underline-offset: 3px; }
+.slabLinks a:hover { color: var(--voice); }
+.slabLinks span { font-size: 14px; color: var(--on-slab-3); }
+
+/* sections under the cards */
+.section { margin-top: 52px; display: grid; gap: 16px; }
+.sectionHead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.h2 { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; }
+.sectionNote { font-size: 14px; color: var(--ink-2); }
+
+/* Examples of what to say: what BolDoc is for, in the caller's own words */
+/* four short requests in a row, then the big document across it */
+.sayList { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.sayItem {
+  display: flex; flex-direction: column; gap: 14px; padding: 18px 20px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--rule);
+  transition: border-color var(--t) var(--ease-out), transform var(--t) var(--ease-out);
+}
+.sayItem:hover { border-color: var(--voice); transform: translateY(-2px); }
+.sayWide { grid-column: 1 / -1; }
+.say { font-size: 17px; line-height: 1.4; color: var(--ink); transition: color var(--t) var(--ease-out); }
+.sayItem:hover .say { color: var(--voice-text); }
+.sayWhat { margin-top: auto; display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.4; color: var(--ink-2); }
+.sayWhat::before { content: ""; width: 7px; height: 7px; margin-top: 5.6px; border-radius: 2px; background: var(--voice); flex: none; }
+
+.steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.step { display: grid; grid-template-columns: 26px 1fr; gap: 12px; padding: 18px; border: 1px solid var(--rule); border-radius: 16px; background: var(--card); }
+.step[data-done="true"] { background: transparent; }
+.step[data-done="true"] .stepTitle { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--noise); }
+.tick {
+  width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--noise); display: grid; place-items: center;
+  font-size: 13px; color: var(--on-ink);
+}
+.step[data-done="true"] .tick { background: var(--ink); border-color: var(--ink); }
+.stepTitle { font-weight: 600; margin-bottom: 4px; }
+
+/* a document: what it is and says, when it last changed, and its files */
+.rows { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.doc {
+  position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; padding: 18px 20px;
+  border: 1px solid var(--rule); border-radius: 16px; background: var(--card);
+  transition: border-color var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out);
+}
+.doc:hover { border-color: var(--voice); box-shadow: 0 20px 34px -28px rgba(18, 18, 18, 0.5); }
+.docIcon {
+  width: 44px; height: 44px; flex: none; border-radius: 12px; display: grid; place-items: center;
+  background: var(--rule-2); color: var(--ink);
+  transition: background-color var(--t) var(--ease-out), color var(--t) var(--ease-out);
+}
+.doc:hover .docIcon { background: var(--voice-wash); color: var(--voice-text); }
+.docMain { flex: 999 1 320px; display: grid; gap: 3px; min-width: 0; }
+.docLink {
+  font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--ink); text-decoration: none;
+  overflow-wrap: anywhere; transition: color var(--t) var(--ease-out);
+}
+.docLink::after { content: ""; position: absolute; inset: 0; border-radius: 16px; }   /* the whole card opens it */
+.doc:hover .docLink, .docLink:hover { color: var(--voice-text); }
+.docLink:focus-visible { outline: none; }
+.docLink:focus-visible::after { outline: 2px solid var(--focus); outline-offset: 3px; }
+.hint {
+  color: color-mix(in srgb, var(--ink) 72%, var(--ink-2)); font-size: 15px; line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.meta { font-size: 13px; color: var(--ink-2); }
+.downloads { position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.dl {
+  display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 14px; border-radius: var(--r-btn);
+  border: 1px solid var(--rule); background: var(--card); color: var(--ink); text-decoration: none;
+  font: 550 14px/1 var(--sans); white-space: nowrap;
+  transition: border-color var(--t-fast) var(--ease-out), background-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+a.dl:hover { color: var(--on-ink); border-color: var(--ink); background: var(--ink); }
+.dl svg { flex: none; }
+.empty { padding: 24px; border: 1px dashed var(--noise-2); border-radius: 16px; max-width: 64ch; display: grid; gap: 6px; }
+.emptyTitle { font-weight: 600; font-size: 17px; }
+.error { color: var(--danger); }
+
+@media (max-width: 960px) {
+  .sayList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: 1fr; }
+}
+/* a phone: the three ways become rows to tap, each ending in a chevron */
+@media (max-width: 640px) {
+  .top { margin-top: 24px; gap: 16px; }
+  .make { padding: 18px 16px; gap: 14px; }
+  .makeNote { display: none; }
+  .ways { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .way { flex-direction: row; align-items: center; gap: 14px; min-height: 76px; padding: 14px; }
+  .way:hover { transform: none; }
+  .wayIcon { width: 46px; height: 46px; border-radius: 13px; }
+  .wayText { flex: 1; gap: 1px; }
+  .wayTitle { font-size: 17px; }
+  .waySub { font-size: 14px; color: var(--ink-2); }
+  .wayNote, .wayGo { display: none; }
+  .chev { display: flex; flex: none; color: var(--noise); }
+  .way:hover .chev { color: var(--voice-text); }
+  .slab { padding: 20px; }
+  .section { margin-top: 36px; }
+  .h2 { font-size: 22px; }
+  .sayList { grid-template-columns: minmax(0, 1fr); }
+  .doc { align-items: flex-start; gap: 12px; padding: 16px; }
+  .docIcon { width: 40px; height: 40px; border-radius: 11px; }
+  .docMain { flex: 1 1 0; }
+  .hint { -webkit-line-clamp: 2; line-clamp: 2; }
+  .downloads { flex-basis: 100%; justify-content: flex-start; }
+  .dl { flex: 1 1 0; justify-content: center; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .way:hover, .sayItem:hover { transform: none; }
+}

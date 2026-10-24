@@ -1,0 +1,14 @@
+target-version = "py39"   # local tests run on 3.9; server runs 3.12
+line-length = 120
+extend-exclude = [".venv", "web", "node_modules"]
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = [
+  "UP006", "UP007", "UP035", "UP045",  # keep typing.List/Optional: pydantic evaluates annotations on 3.9
+  "RUF001", "RUF002", "RUF003",        # we intentionally use non-ASCII (₹, Devanagari, Greek homoglyph map)
+  "B008",                              # pydantic Field() in defaults is idiomatic
+]
+
+[lint.isort]
+known-first-party = ["docengine", "protocol", "apps", "telephony"]

@@ -1,0 +1,8 @@
+pipecat-ai[sarvam,silero,websocket,local-smart-turn-v3]==1.13.0
+fastapi>=0.115
+uvicorn[standard]>=0.30
+plivo>=4.55
+loguru>=0.7
+httpx>=0.27
+redis==8.1.0
+tokenizers>=0.20

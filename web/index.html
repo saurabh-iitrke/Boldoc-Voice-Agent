@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f3f3f1" />
+    <script>
+      /* The console's saved theme before the first paint; the same rules as src/lib/theme.ts. */
+      try {
+        var p = location.pathname, d = document.documentElement;
+        if (localStorage.getItem("boldoc.theme") === "dark") d.dataset.theme = "dark";
+        if (p === "/app" || (p.indexOf("/app/") === 0 && p.indexOf("/app/documents/") !== 0)) {
+          d.dataset.area = "app";
+          if (d.dataset.theme === "dark") document.querySelector('meta[name="theme-color"]').content = "#141413";
+        }
+      } catch (e) {}
+    </script>
+    <meta name="description" content="Say what you need in Hindi, English or any Indian language. BolDoc writes the document while you talk; the link comes by SMS. First 3 calls free." />
+    <!-- link previews (WhatsApp, LinkedIn): crawlers don't run JS, so these are static -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BolDoc" />
+    <meta property="og:title" content="BolDoc: documents by phone call, in your language" />
+    <meta property="og:description" content="Bolo. Document taiyaar. Call +91 80 3544 9833, say what you need, get the PDF, Word or Excel link by SMS. First 3 calls free." />
+    <meta property="og:url" content="https://boldoc.in/" />
+    <meta name="twitter:card" content="summary" />
+    <!-- the PNG (sized) for browsers without SVG icons; the SVG after it wins where supported -->
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>BolDoc</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

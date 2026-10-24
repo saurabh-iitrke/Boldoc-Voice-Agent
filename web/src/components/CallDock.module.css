@@ -1,0 +1,82 @@
+/* The call's controls: the caller's level on the left, three controls in the middle, the running cost on the right. */
+.dock {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
+  padding: 14px var(--pad) calc(14px + env(safe-area-inset-bottom));
+}
+
+.meter { display: flex; align-items: center; gap: 10px; font: 400 13px/1.3 var(--sans); color: var(--ink-2); min-width: 0; }
+.bars { display: flex; align-items: center; gap: 3px; height: 22px; flex: none; }
+.bar {
+  width: 4px; height: 100%; border-radius: 2px; background: var(--ink); transform-origin: bottom;
+  transform: scaleY(min(1, calc(0.2 + var(--level, 0) * 0.9))); transition: transform 80ms linear;
+}
+.bar:nth-child(2) { transform: scaleY(min(1, calc(0.25 + var(--level, 0) * 1.3))); }
+.bar:nth-child(3) { transform: scaleY(min(1, calc(0.3 + var(--level, 0) * 1.7))); }
+.bar:nth-child(4) { transform: scaleY(min(1, calc(0.22 + var(--level, 0) * 1.2))); background: var(--noise); }
+.bar:nth-child(5) { transform: scaleY(min(1, calc(0.15 + var(--level, 0) * 0.8))); background: var(--noise-2); }
+.meterMuted .bar { transform: scaleY(0.15); background: var(--noise-2); }
+
+.controls { position: relative; display: flex; align-items: center; gap: 12px; }
+
+.ctl, .end {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 56px; border-radius: 16px;
+  font: 550 15px/1 var(--sans); cursor: pointer;
+  transition: background-color var(--t) var(--ease-out), border-color var(--t) var(--ease-out),
+    color var(--t) var(--ease-out), transform var(--t) var(--ease-out), box-shadow var(--t) var(--ease-out);
+}
+.ctl { min-width: 132px; padding: 0 18px; border: 1px solid var(--rule); background: var(--rule-2); color: var(--ink); }
+.ctl:hover:not(:disabled) { background: var(--card); border-color: var(--ink); transform: translateY(-2px); }
+.ctl:disabled { color: var(--noise); cursor: not-allowed; }
+.ctl[aria-pressed="true"], .ctl[aria-expanded="true"] { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+.ctl[aria-pressed="true"]:hover { background: var(--ink-hover); }
+
+/* the orange of a live line, a shade deeper so its white label reads at 4.7:1 (#ff4d1a gives 3.3:1) */
+.end { min-width: 168px; padding: 0 22px; border: 0; background: #d9360a; color: #fff; font-weight: 600; }
+.end:hover { background: #c22f08; transform: translateY(-2px); box-shadow: 0 16px 30px -16px rgba(255, 77, 26, 0.9); }
+.ctl:active, .end:active { transform: scale(0.97); transition-duration: var(--t-fast); }
+
+.cost { justify-self: end; font: 400 13px/1.3 var(--sans); color: var(--ink-2); text-align: right; }
+
+/* the keypad: a card above the controls (a phone: a sheet over the bottom of the screen) */
+.pad {
+  position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%); width: 280px; padding: 14px;
+  border-radius: 20px; background: var(--card); border: 1px solid var(--rule); z-index: 30;
+  box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.35); animation: up var(--t) var(--ease-out) both;
+}
+@keyframes up { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translateX(-50%); } }
+.padHead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.padLabel { display: flex; align-items: baseline; gap: 10px; font: 500 14px/1 var(--sans); color: var(--ink-2); }
+.typed { font: 500 16px/1 var(--mono); letter-spacing: 0.08em; color: var(--ink); }
+.close {
+  width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 10px;
+  background: none; color: var(--ink-2); cursor: pointer;
+}
+.close:hover { color: var(--ink); background: var(--rule-2); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.key {
+  display: grid; justify-items: center; align-content: center; gap: 1px; height: 54px; border-radius: 14px;
+  border: 1px solid var(--rule-2); background: var(--panel); color: var(--ink); cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+.key:hover { background: var(--rule-2); }
+.key:active { transform: scale(0.97); background: var(--rule); }
+.digit { font: 500 22px/1 var(--sans); }
+.letters { font: 600 9.5px/1 var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--noise); min-height: 10px; }
+
+@media (max-width: 860px) {
+  .dock { grid-template-columns: 1fr; padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); background: var(--card); }
+  .meter, .cost { display: none; }
+  .controls { position: static; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .ctl, .end { min-width: 0; height: 58px; flex-direction: column; gap: 3px; padding: 0; font-size: 13px; }
+  .pad {
+    position: fixed; left: 0; right: 0; bottom: calc(82px + env(safe-area-inset-bottom)); width: auto; transform: none;
+    border-radius: 22px 22px 0 0; border-width: 1px 0 0; padding: 14px 16px 12px;
+    box-shadow: 0 -18px 36px -28px rgba(0, 0, 0, 0.35); animation: sheet var(--t) var(--ease-out) both;
+  }
+  .key { height: 52px; }
+}
+@keyframes sheet { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .pad { animation: none; }
+  .ctl:hover:not(:disabled), .end:hover { transform: none; }
+}

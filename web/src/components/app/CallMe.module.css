@@ -1,0 +1,23 @@
+/* Opened from the Home's "Call me" card, under the three ways to start: outlined in the card's orange. */
+.panel {
+  display: grid; gap: 12px; padding: 18px 20px; border: 1px solid var(--voice); border-radius: 16px;
+  background: var(--card); box-shadow: var(--voice-glow); scroll-margin: 96px;
+}
+.h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+.text { color: var(--ink-2); font-size: 15px; margin: 0; max-width: 70ch; }
+.numbers { border: 0; padding: 0; margin: 0; display: grid; gap: 6px; }
+.legend { font: 500 13px/1.4 var(--sans); color: var(--ink-2); padding: 0; margin-bottom: 4px; }
+.number { display: flex; align-items: center; gap: 10px; font-size: 16px; font-variant-numeric: tabular-nums;
+  cursor: pointer; }
+.number input { accent-color: var(--voice); width: 18px; height: 18px; }
+.only { margin: 0; font-size: 17px; font-weight: 550; font-variant-numeric: tabular-nums; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.fine { margin: 0; font: 500 12.5px/1.4 var(--sans); color: var(--ink-2); }
+.status { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 15.5px; color: var(--ink); }
+.pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--voice); flex: none;
+  animation: pulse 1.2s ease-in-out infinite; }
+.error { margin: 0; color: var(--danger); font-size: 15px; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.8); } }
+@media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
+@media (max-width: 640px) { .panel { padding: 16px; } }

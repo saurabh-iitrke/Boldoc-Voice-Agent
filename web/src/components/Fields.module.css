@@ -1,0 +1,47 @@
+.field { display: grid; gap: 8px; }
+.label { font-weight: 600; font-size: 0.95rem; }
+
+.box {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: var(--radius-control);
+  background: var(--sheet);
+  overflow: hidden;
+}
+.box:focus-within { border-color: var(--ink); box-shadow: 0 0 0 3px var(--ink-wash); }
+.prefix {
+  display: grid; place-items: center; padding: 0 12px 0 14px; color: var(--muted); font-weight: 600;
+  border-right: 1px solid var(--rule);
+}
+.input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 14px 14px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  outline: none;
+}
+.input::placeholder { color: var(--rule-strong); }
+
+.invalid { border-color: var(--margin) !important; box-shadow: 0 0 0 3px var(--margin-wash) !important; }
+.error { color: var(--margin); font-size: 0.92rem; font-weight: 500; }
+
+/* One real input (so SMS autofill and paste work) drawn as six slots. */
+.otp { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; border-radius: 12px; }
+.slot {
+  display: grid; place-items: center; height: 58px; border: 1.5px solid var(--rule-strong); border-radius: 10px;
+  background: var(--sheet); font-size: 1.6rem; font-weight: 600;
+}
+.otp:focus-within .active { border-color: var(--ink); box-shadow: 0 0 0 3px var(--ink-wash); }
+.otpInput {
+  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; border: 0; font-size: 16px;
+  caret-color: transparent; cursor: text;
+}
+.otp.invalid .slot { border-color: var(--margin); }
+.otp.invalid { box-shadow: none !important; }

@@ -1,0 +1,78 @@
+# SITE_HOSTS: every name the site answers on, e.g. "boldoc.in, www.boldoc.in" (comma-separated). The
+# sslip.io name stays as an alias so Plivo webhooks and links sent before the domain switch keep working.
+{$SITE_HOSTS} {
+	encode zstd gzip
+
+	# Control plane: document link pages' API, downloads, SMS delivery receipts.
+	# (/internal/* is deliberately not routed: talker -> control traffic stays on the Docker network.)
+	handle /api/* {
+		reverse_proxy control:8091
+	}
+	handle /plivo/sms-status {
+		reverse_proxy control:8091
+	}
+	# Voice agent: Plivo answer/hangup webhooks + bidirectional audio stream (WebSocket) -> talker
+	handle /plivo/* {
+		reverse_proxy talker:8090
+	}
+	handle /healthz {
+		reverse_proxy talker:8090
+	}
+
+	# Web app (single-page app): hashed assets cached forever, everything else falls back to index.html
+	handle {
+		root * /srv/webroot/current
+		@assets path /assets/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		# Document link pages: never indexed, and the link never leaks to other sites as a referrer
+		@doc path /d/*
+		header @doc X-Robots-Tag "noindex, nofollow"
+		header @doc Referrer-Policy "no-referrer"
+		header -Server
+		try_files {path} /index.html
+		file_server
+	}
+}
+
+# The admin console, on a name of its own (ADMIN_HOSTS, comma-separated; the same variable tells control which hosts
+# may use /admin/api). Add admin.boldoc.in only once its DNS record exists, or Caddy keeps retrying its certificate.
+# Only the admin app and its API live here: the site's /api is not routed on this name, nor /admin/api on the site's.
+{$ADMIN_HOSTS:admin.boldoc.in} {
+	encode zstd gzip
+	header {
+		X-Robots-Tag "noindex, nofollow"
+		Referrer-Policy "no-referrer"
+		X-Frame-Options "DENY"
+		X-Content-Type-Options "nosniff"
+		Strict-Transport-Security "max-age=31536000"
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+		-Server
+	}
+
+	handle /admin/api/* {
+		header {
+			Cache-Control "no-store"
+			defer
+		}
+		reverse_proxy control:8091
+	}
+
+	# The app (releases/<id> + current symlink, scripts/deploy_admin_web.sh): hashed assets cached forever, the page
+	# itself revalidated so a new release shows on the next load. Its page is admin.html (also for "/").
+	handle {
+		root * /srv/adminroot/current
+		@assets path /assets/*
+		header @assets Cache-Control "public, max-age=31536000, immutable"
+		@page not path /assets/*
+		header @page Cache-Control "no-cache"
+		try_files {path} /admin.html
+		file_server {
+			index admin.html
+		}
+	}
+}
+
+# www -> the bare domain (only meaningful once the domain is live; harmless before)
+www.{$PUBLIC_HOST} {
+	redir https://{$PUBLIC_HOST}{uri} permanent
+}

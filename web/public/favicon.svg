@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <!-- BolDoc's mark (components/site/Mark.tsx) on a 16 px grid: crisp at 16 and 32; dark tab bars get the console's dark mark -->
+  <style>
+    .page { fill: #ffffff; stroke: #121212; }
+    .l2 { fill: #a3a39c; }
+    .l3 { fill: #c9c9c2; }
+    @media (prefers-color-scheme: dark) {
+      .page { fill: #1c1c1a; stroke: #f3f3f1; }
+      .l2 { fill: #8a8a83; }
+      .l3 { fill: #5c5c57; }
+    }
+  </style>
+  <rect class="page" x="2.5" y="1.5" width="11" height="13" rx="2.5" stroke-width="1"/>
+  <rect x="5" y="5" width="6" height="2" rx="1" fill="#ff4d1a"/>
+  <rect class="l2" x="5" y="8" width="6" height="1" rx="0.5"/>
+  <rect class="l3" x="5" y="10" width="4" height="1" rx="0.5"/>
+</svg>
